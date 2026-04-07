@@ -50,15 +50,19 @@ def split_video(
             audio_file_base_name = segment_index2name[f"{segment_index}"]
             audio_file = f'{audio_file_base_name}.{audio_output_format}'
             subaudio = subvideo.audio
-            # Convert to mono and set sample rate using ffmpeg parameters
-            subaudio.write_audiofile(
-                os.path.join(video_segment_cache_path, audio_file), 
-                codec='mp3',
-                fps=audio_sample_rate,  # Set sample rate
-                ffmpeg_params=['-ac', '1'],  # Force mono (1 audio channel)
-                verbose=False, 
-                logger=None
-            )
+            # Skip audio extraction if no audio track (e.g., surgical videos)
+            if subaudio is not None:
+                # Convert to mono and set sample rate using ffmpeg parameters
+                subaudio.write_audiofile(
+                    os.path.join(video_segment_cache_path, audio_file),
+                    codec='mp3',
+                    fps=audio_sample_rate,  # Set sample rate
+                    ffmpeg_params=['-ac', '1'],  # Force mono (1 audio channel)
+                    verbose=False,
+                    logger=None
+                )
+            else:
+                logger.warning(f"No audio track for video {video_name} segment {start}-{end}. Skipping audio extraction.")
             
             segment_index += 1
 

@@ -50,7 +50,10 @@ def split_video(
             audio_file = f'{audio_file_base_name}.{audio_output_format}'
             try:
                 subaudio = subvideo.audio
-                subaudio.write_audiofile(os.path.join(video_segment_cache_path, audio_file), codec='mp3', verbose=False, logger=None)
+                if subaudio is not None:
+                    subaudio.write_audiofile(os.path.join(video_segment_cache_path, audio_file), codec='mp3', verbose=False, logger=None)
+                else:
+                    logger.warning(f"Warning: No audio track for video {video_name} ({start}-{end}). Skipping audio extraction.")
             except Exception as e:
                 logger.warning(f"Warning: Failed to extract audio for video {video_name} ({start}-{end}). Probably due to lack of audio track.")
 

@@ -53,29 +53,49 @@ async def speech_to_text_online(video_name, working_dir, segment_index2name, aud
     dashscope.api_key = api_key
     
     cache_path = os.path.join(working_dir, '_cache', video_name)
-    
+
     # Create semaphore to limit concurrent requests
     semaphore = asyncio.Semaphore(max_concurrent)
-    
+
     # Create tasks for all segments
     tasks = []
+    skipped_segments = []
     for index in segment_index2name:
         segment_name = segment_index2name[index]
         audio_file = os.path.join(cache_path, f"{segment_name}.{audio_output_format}")
-        
+
+        # Skip segments without audio files (e.g., videos without audio track)
+        if not os.path.exists(audio_file):
+            skipped_segments.append(index)
+            logger.warning(f"Audio file not found for segment {segment_name}, skipping ASR")
+            continue
+
         task = process_single_segment(
-            semaphore, index, segment_name, audio_file, 
+            semaphore, index, segment_name, audio_file,
             global_config.get('asr_model'), audio_output_format, sample_rate
         )
         tasks.append(task)
-    
+
+    # Log skipped segments
+    if skipped_segments:
+        logger.info(f"Skipped {len(skipped_segments)} segments without audio files")
+
     # Execute all tasks concurrently with real-time progress
     total_tasks = len(tasks)
     logger.info(f"🎤 Starting ASR for {total_tasks} audio segments (max {max_concurrent} concurrent)...")
-    
+
     transcripts = {}
     completed = 0
-    
+
+    # Add empty transcripts for skipped segments (no audio)
+    for index in skipped_segments:
+        transcripts[index] = ""
+
+    # If no tasks to process (all segments skipped), return early
+    if total_tasks == 0:
+        logger.info(f"🎉 ASR processing completed! No audio segments to process (video has no audio track).")
+        return transcripts
+
     # Use asyncio.as_completed for real-time progress updates
     for completed_task in asyncio.as_completed(tasks):
         try:
@@ -94,9 +114,9 @@ async def speech_to_text_online(video_name, working_dir, segment_index2name, aud
             completed += 1
             logger.error(f"❌ Task failed: {e}")
             logger.info(f"❌ Failed {completed}/{total_tasks} segments (Progress: {completed/total_tasks*100:.1f}%)")
-    
+
     logger.info(f"🎉 ASR processing completed! Processed {len(transcripts)} segments successfully.")
-    
+
     return transcripts
 
 
