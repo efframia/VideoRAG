@@ -46,7 +46,7 @@ const Settings = () => {
     processingModel: 'gpt-4o-mini',
     analysisModel: 'gpt-4o-mini', 
     dashscopeApiKey: '',
-    captionModel: 'qwen-vl-plus-latest',
+    captionModel: 'qwen-vl-plus',
     asrModel: 'paraformer-realtime-v2',
     storeDirectory: '',
     imagebindInstalled: false,
@@ -408,7 +408,7 @@ const ModelStatusSection = ({ storeDirectory }: { storeDirectory: string }) => {
                       </label>
                       <input
                         type="text"
-                        value="qwen-vl-plus-latest"
+                        value="qwen-vl-plus"
                         readOnly
                         className="w-full px-3 py-2 text-sm border rounded-md bg-gray-100 text-gray-600"
                       />

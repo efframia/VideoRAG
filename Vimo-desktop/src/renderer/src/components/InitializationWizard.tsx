@@ -43,7 +43,7 @@ const InitializationWizard: React.FC<InitializationWizardProps> = ({ onComplete 
     processingModel: 'gpt-4o-mini',
     analysisModel: 'gpt-4o-mini',
     dashscopeApiKey: '',
-    captionModel: 'qwen-vl-plus-latest',
+    captionModel: 'qwen-vl-plus',
     asrModel: 'paraformer-realtime-v2'
   });
 
@@ -447,7 +447,7 @@ const InitializationWizard: React.FC<InitializationWizardProps> = ({ onComplete 
                 <label className="text-sm font-medium text-gray-700 block mb-2">
                   Processing Model
                 </label>
-                <select
+                {/* <select
                   value={apiKeySettings.processingModel}
                   onChange={(e) => handleApiKeyChange('processingModel', e.target.value)}
                   className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -456,7 +456,13 @@ const InitializationWizard: React.FC<InitializationWizardProps> = ({ onComplete 
                   <option value="gpt-4o">gpt-4o</option>
                   <option value="gpt-5-mini">gpt-5-mini</option>
                   <option value="gpt-5">gpt-5</option>
-                </select>
+                </select> */}
+                <input
+                  type="text"
+                  value={apiKeySettings.processingModel}
+                  onChange={(e) => handleApiKeyChange('processingModel', e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
                 <p className="text-xs text-gray-500 mt-1">Choose model for high-volume preprocessing</p>
               </div>
               
@@ -464,7 +470,7 @@ const InitializationWizard: React.FC<InitializationWizardProps> = ({ onComplete 
                 <label className="text-sm font-medium text-gray-700 block mb-2">
                   Analysis Model
                 </label>
-                <select
+                {/* <select
                   value={apiKeySettings.analysisModel}
                   onChange={(e) => handleApiKeyChange('analysisModel', e.target.value)}
                   className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -473,7 +479,13 @@ const InitializationWizard: React.FC<InitializationWizardProps> = ({ onComplete 
                   <option value="gpt-4o">gpt-4o</option>
                   <option value="gpt-5-mini">gpt-5-mini</option>
                   <option value="gpt-5">gpt-5</option>
-                </select>
+                </select> */}
+                <input
+                  type="text"
+                  value={apiKeySettings.analysisModel}
+                  onChange={(e) => handleApiKeyChange('analysisModel', e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
                 <p className="text-xs text-gray-500 mt-1">Choose model for detailed analysis tasks</p>
               </div>
             </div>
@@ -523,7 +535,7 @@ const InitializationWizard: React.FC<InitializationWizardProps> = ({ onComplete 
               </label>
               <input
                 type="text"
-                value="qwen-vl-plus-latest"
+                value="qwen-vl-plus"
                 readOnly
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-gray-100 text-gray-600"
               />

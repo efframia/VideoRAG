@@ -265,7 +265,7 @@ async function initializeVideoRAGConfig(): Promise<void> {
       openai_base_url: settings.openaiBaseUrl || 'https://api.openai.com/v1',
       analysisModel: settings.analysisModel || 'gpt-4o-mini',
       processingModel: settings.processingModel || 'gpt-4o-mini',
-      caption_model: settings.captionModel || 'qwen-vl-plus-latest',
+      caption_model: settings.captionModel || 'qwen-vl-plus',
       asr_model: settings.asrModel || 'paraformer-realtime-v2'
     }
     
